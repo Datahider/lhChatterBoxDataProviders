@@ -26,7 +26,7 @@ class lhSessionFile extends lhAbstractSession {
         $this->session_id = $session;
         $this->checkSessionDir();
         
-        $this->session_data = $this->readSessionData();
+        $this->readSessionData();
     }
     
     public function get($param, $default=null) {
@@ -105,6 +105,7 @@ class lhSessionFile extends lhAbstractSession {
             $this->writeSessionData();
             $this->log(self::$facility_session, "Инициализация сессии $this->session_id");
         }
+        return $this->session_data;
     }
     
     protected function writeSessionData() {
