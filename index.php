@@ -157,8 +157,6 @@ if ($block->template != 'Хм... :thinking: Ок. Я буду называть �
     die();
 }
 echo '.';
-
-
 echo "Ok\n";
 
 
