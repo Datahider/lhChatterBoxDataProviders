@@ -12,7 +12,6 @@
  * @author user
  */
 require_once LH_LIB_ROOT . 'lhChatterBoxDataProviders/abstract/lhAbstractAIML.php';
-require_once '../lhTextConv/lhTextConv/lhTextConv.php';
 
 class lhAIML extends lhAbstractAIML {
     

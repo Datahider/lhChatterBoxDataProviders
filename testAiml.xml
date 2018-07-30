@@ -23,4 +23,19 @@
             </random>
         </template>
     </category>
+    <category name="Anyway">
+        <description>
+            Категория содержащая ответы на все случаи жизни. 
+            Фильтруется по тегу #anyway
+        </description>
+        <tag>anyway</tag>
+        <pattern></pattern>
+        <template>
+            <random>
+                <li>Я бы не хотел сейчас об этом говорить...</li>
+                <li>Хм...</li>
+                <li>Кстати, у тебя нет знакомого бухгалтера?</li>
+            </random>
+        </template>
+    </category>
 </aiml>

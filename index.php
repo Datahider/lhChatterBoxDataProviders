@@ -12,6 +12,8 @@ date_default_timezone_set('UTC');
 
 require_once LH_LIB_ROOT . 'lhChatterBoxDataProviders/classes/lhSessionFile.php';
 require_once LH_LIB_ROOT . 'lhChatterBoxDataProviders/classes/lhAIML.php';
+require_once '../lhTextConv/lhTextConv/lhTextConv.php';
+
 
 $tags = [
     '#business #Money', [ 'business', 'Money' ],
@@ -25,6 +27,12 @@ $category_tags = [
     [ 'swiming' ], true,
     [ 'live' ], false,
     [], false
+];
+
+$dialogs = [
+    "Привет", "", "100.000000", "Привет", ["Привет, коль не шутишь!", "Привет.", "Здрасьте"],
+    "Здаров!", "#oficial", "052.631579", "Здравствуйте", ["Добрый день.", "Рад приветствовать!"],
+    "Любая фигня", "#anyway", "000.000000", "", ["Я бы не хотел сейчас об этом говорить...", "Хм...", "Кстати, у тебя нет знакомого бухгалтера?"]
 ];
 
 $n = new lhSessionFile('123');
@@ -89,7 +97,30 @@ echo 'Загрузка testAiml.xml...';
 $aiml->loadAiml('testAiml.xml');
 echo "Ok\n";
 
-echo 'Тестируем bestMatches($text, $tags=[], $minhitratio=0)';
-print_r($aiml->bestMatches('Здравствуйте', '', 80));
+echo 'Проверка bestMatches($text, $tags=[], $minhitratio=0)';
+for($i=0; isset($dialogs[$i]); $i += 5) {
+    $result = $aiml->bestMatches($dialogs[$i], $dialogs[$i+1]);
+    foreach ($result as $key => $value) {
+        if ($key != $dialogs[$i+2]) {
+            echo "FAIL!!! - \$i=$i Получено: \"$key\". Ожидалось: ".$dialogs[$i+2];
+            die();
+        }
+        echo '.';
+        if ($value[0] != $dialogs[$i+3]) {
+            echo "FAIL!!! - \$i=$i Получено: \"$value[0]\". Ожидалось: ".$dialogs[$i+3];
+            die();
+        }
+        echo '.';
+        foreach ($value[1] as $key => $arr) {
+            if ($arr != $dialogs[$i+4][$key]) {
+                echo "FAIL!!! - \$i=$i Получено: \"$arr\". Ожидалось: ".$dialogs[$i+4][$key];
+                die();
+            }
+            echo '.';
+        }
+        break; // тестим только первое попадание
+    }
+}
+echo "Ok\n";
 
 
