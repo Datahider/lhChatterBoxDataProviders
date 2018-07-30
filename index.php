@@ -14,14 +14,14 @@ require_once LH_LIB_ROOT . 'lhChatterBoxDataProviders/classes/lhSessionFile.php'
 require_once LH_LIB_ROOT . 'lhChatterBoxDataProviders/classes/lhAIML.php';
 
 $tags = [
-    '#business #money', [ 'business', 'money' ],
+    '#business #Money', [ 'business', 'Money' ],
     '', [],
     ['live', 'family'], [ 'live', 'family' ],
     '#math', [ 'math' ]
 ];
 
 $category_tags = [
-    [ 'business', 'money' ], true,
+    [ 'Business', 'money' ], true,
     [ 'swiming' ], true,
     [ 'live' ], false,
     [], false
@@ -50,9 +50,9 @@ echo "\nПроверка lhAIML\n";
 echo 'Проверка splitTags($tags)';
 $aiml = new lhAIML();
 for ($i=0; isset($tags[$i]); $i += 2) {
-    $spit = $aiml->splitTags($tags[$i]);
+    $split = $aiml->splitTags($tags[$i]);
     foreach ($tags[$i+1] as $key => $value) {
-        if ($spit[$key] != $value) {
+        if ($split[$key] != $value) {
             echo "FAIL!!! - Получено: \"$split[$key]\", ожидалось: \"$value\"";
             die();
         }
@@ -73,9 +73,9 @@ for ($i=0; isset($category_tags[$i]); $i += 2) {
 // Теперь тестируем
 $i = 0;
 foreach ($aiml->getAiml()->category as $category) {
-    if ($aiml->hasTags($tags[$i*2+1], $category) != $category_tags[$i*2+1]) {
+    if ($aiml->hasTags($tags[$i*2], $category) != $category_tags[$i*2+1]) {
         echo "FAIL!!! Теги:\n";
-        print_r($tags[$i*2+1]);
+        print_r($tags[$i*2]);
         echo ('Ожидалось: ' . ($category_tags[$i*2+1] ? 'true' : 'false'));
         echo "\n";
         die();
@@ -84,3 +84,12 @@ foreach ($aiml->getAiml()->category as $category) {
     $i++;
 }
 echo "Ok\n";
+
+echo 'Загрузка testAiml.xml...';
+$aiml->loadAiml('testAiml.xml');
+echo "Ok\n";
+
+echo 'Тестируем bestMatches($text, $tags=[], $minhitratio=0)';
+print_r($aiml->bestMatches('Здравствуйте', '', 80));
+
+

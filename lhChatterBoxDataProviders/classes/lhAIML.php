@@ -12,15 +12,27 @@
  * @author user
  */
 require_once LH_LIB_ROOT . 'lhChatterBoxDataProviders/abstract/lhAbstractAIML.php';
+require_once '../lhTextConv/lhTextConv/lhTextConv.php';
 
 class lhAIML extends lhAbstractAIML {
     
     public function bestMatches($text, $tags=[], $minhitratio=0) {
+        $metaphone = lhTextConv::metaphone($text);
         $aiml = $this->getAiml();
         $tags = $this->splitTags($tags);
         foreach ($aiml->category as $category) {
-            
+            if ($this->hasTags($tags, $category)) {
+                foreach ($category->pattern as $pattern) {
+                    $index = sprintf("%010.6f", lhTextConv::similarity($metaphone, lhTextConv::metaphone($pattern)));
+                    if ($index >= $minhitratio) {
+                        $result[$index] = [(string)$pattern, (array)$category->template->random->li];
+                    }
+                }
+                
+            }
         }
+        krsort($result);
+        return $result;
     }
     
     // splitTags($tags)
@@ -40,7 +52,7 @@ class lhAIML extends lhAbstractAIML {
         foreach ($tags as $tag) {
             $has_tag = false;
             foreach ($category->tag as $category_tag) {
-                if ($category_tag == $tag) {
+                if (mb_strtolower($category_tag) == mb_strtolower($tag)) {
                     $has_tag = true;
                     break;
                 }
