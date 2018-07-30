@@ -12,6 +12,7 @@ date_default_timezone_set('UTC');
 
 require_once LH_LIB_ROOT . 'lhChatterBoxDataProviders/classes/lhSessionFile.php';
 require_once LH_LIB_ROOT . 'lhChatterBoxDataProviders/classes/lhAIML.php';
+require_once LH_LIB_ROOT . 'lhChatterBoxDataProviders/classes/lhCSML.php';
 require_once '../lhTextConv/lhTextConv/lhTextConv.php';
 
 
@@ -122,5 +123,43 @@ for($i=0; isset($dialogs[$i]); $i += 5) {
     }
 }
 echo "Ok\n";
+
+echo "\nПроверка lhCSML\n";
+echo 'Проверка csmlCheck()';
+
+$cs = new lhCSML();
+$cs->loadCsml('testCsml.xml');
+$check_result = $cs->csmlCheck();
+if (count($check_result)) {
+    echo ".FAIL!!! - Не найдены блоки\n";
+    print_r($check_result);
+} else {
+    echo ".Ok\n";
+}
+
+echo 'Проверка block($name=null)';
+$block = $cs->block();
+if ($block['name'] != 'start') {
+    echo "FAIL!!! - Получено \"$block[name]\", ожидалось \"start\"";
+    die();
+}
+echo '.';
+
+$block = $cs->block('Не хочет называть имя');
+if ($block['name'] != 'Не хочет называть имя') {
+    echo "FAIL!!! - Получено \"$block[name]\", ожидалось \"Не хочет называть имя\"";
+    die();
+}
+echo '.';
+
+if ($block->template != 'Хм... :thinking: Ок. Я буду называть тебя Уася, хорошо?') {
+    echo "FAIL!!! - Получено \"$block->template\", ожидалось \"Хм... :thinking: Ок. Я буду называть тебя Уася, хорошо?\"";
+    die();
+}
+echo '.';
+
+
+echo "Ok\n";
+
 
 

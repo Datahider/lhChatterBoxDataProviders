@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<csml>
+    <block name="start">
+        <template>Привет! Я Лостман. А тебя как зовут?</template>
+        <answer>
+            <validator>name</validator>
+            <next>Узнал имя</next>
+            <var name="name">__validated__</var>
+        </answer>
+        <answer>
+            <pattern>Не скажу</pattern>
+            <pattert>Тебе зачем?</pattert>
+            <next>Не хочет называть имя</next>
+        </answer>
+        <answer default="yes">
+            <next>Не распознал имя</next>
+            <var name="name">__user_answer__</var>
+        </answer>
+    </block>
+
+    <block name="Узнал имя"><!-- Так происходит переход к болтовне по AIML -->
+        <template>Значит __name__. Ок. Как дела, __vocative__? :wink:</template>
+        <var name="status">babbler</var>
+        <var name="context">Дела</var>
+        <var name="tags">#какдела</var>
+    </block>
+
+    <block name="Не хочет называть имя">
+        <template>Хм... :thinking: Ок. Я буду называть тебя Уася, хорошо?</template>
+        <hint>Да</hint>
+        <hint>Нет</hint>
+        <answer>
+            <pattern>Да</pattern>
+            <pattern>Без проблем</pattern>
+            <var name="name">Уася</var>
+            <next>Узнал имя</next>
+        </answer>
+        <answer>
+            <pattern>Нет</pattern>
+            <next>Даем возможность исправить имя</next>
+            <var name="name"/>
+        </answer>
+    </block>
+
+    <block name="Не распознал имя">
+        <template>__name__? Редкое имя :wink: Тебя правда так зовут?</template>
+        <hint>Да</hint>
+        <hint>Нет</hint>
+        <answer>
+            <pattern>Да</pattern>
+            <pattern>Ну да</pattern>
+            <next>Узнал имя</next>
+        </answer>
+        <answer>
+            <pattern>Нет</pattern>
+            <next>Даем возможность исправить имя</next>
+            <var name="name"/>
+        </answer>
+    </block>
+    
+    <block name="Даем возможность исправить имя">
+        <template>Так как же тебя зовут?</template>
+        <answer>
+            <validator>name</validator>
+            <next>Узнал имя</next>
+            <var name="name">__validated__</var>
+        </answer>
+        <answer>
+            <pattern>Не скажу</pattern>
+            <pattert>Тебе зачем?</pattert>
+            <next>Не хочет называть имя повторно</next>
+        </answer>
+        <answer default="yes">
+            <next>Не распознал имя</next>
+            <var name="name">__user_answer__</var>
+        </answer>
+    </block>
+    
+    <block name="Не хочет называть имя повторно">
+        <template>Блин, ты че, издеваешься? Давай-ка поговорим завтра. Пока! :fuck:</template>
+        <var name="status">hold</var>
+    </block>
+    
+</csml>
