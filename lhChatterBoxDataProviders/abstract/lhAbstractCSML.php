@@ -11,7 +11,7 @@
  *
  * @author user
  */
-require_once LH_LIB_ROOT . 'lhChatterBoxDataProviders/interface/lhCSMLInterface.php';
+require_once __DIR__ . '/../interface/lhCSMLInterface.php';
 
 abstract class lhAbstractCSML implements lhCSMLInterface {
     private $csml;

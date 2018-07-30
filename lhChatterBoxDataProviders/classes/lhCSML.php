@@ -11,7 +11,7 @@
  *
  * @author user
  */
-require_once LH_LIB_ROOT . 'lhChatterBoxDataProviders/abstract/lhAbstractCSML.php';
+require_once __DIR__ . '/../abstract/lhAbstractCSML.php';
 
 class lhCSML extends lhAbstractCSML {
     

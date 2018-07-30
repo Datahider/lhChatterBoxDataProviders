@@ -11,7 +11,7 @@
  *
  * @author user
  */
-require_once LH_LIB_ROOT . 'lhChatterBoxDataProviders/abstract/lhAbstractAIML.php';
+require_once __DIR__ . '/../abstract/lhAbstractAIML.php';
 
 class lhAIML extends lhAbstractAIML {
     

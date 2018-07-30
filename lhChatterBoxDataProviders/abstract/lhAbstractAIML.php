@@ -12,7 +12,7 @@
  * @author user
  */
 
-require_once LH_LIB_ROOT . 'lhChatterBoxDataProviders/interface/lhAimlInterface.php';
+require_once __DIR__ . '/../interface/lhAimlInterface.php';
 
 abstract class lhAbstractAIML implements lhAimlInterface {
     private $aiml;

@@ -18,7 +18,7 @@
  * @author Петя Datahider
  */
 
-require_once LH_LIB_ROOT . 'lhChatterBoxDataProviders/abstract/lhAbstractSession.php';
+require_once __DIR__ . '/../abstract/lhAbstractSession.php';
 
 class lhSessionFile extends lhAbstractSession {
 

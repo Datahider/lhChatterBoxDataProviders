@@ -12,7 +12,7 @@
  * @author Петя Datahider
  */
 
-require_once LH_LIB_ROOT . 'lhChatterBoxDataProviders/interface/lhSessionInterface.php';
+require_once __DIR__ . '/../interface/lhSessionInterface.php';
 
 abstract class lhAbstractSession implements lhSessionInterface {
     
