@@ -24,7 +24,7 @@ class lhAIML extends lhAbstractAIML {
                 foreach ($category->pattern as $pattern) {
                     $index = sprintf("%010.6f", lhTextConv::similarity($metaphone, lhTextConv::metaphone($pattern)));
                     if ($index >= $minhitratio) {
-                        $result[$index] = [(string)$pattern, (array)$category->template->random->li];
+                        $result[$index] = $category;
                     }
                 }
                 
