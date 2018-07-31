@@ -4,16 +4,26 @@
         <tag>unformal</tag>
         <pattern>Привет</pattern>
         <pattern>Здарова!</pattern>
-        <template>Привет, коль не шутишь!</template>
-        <template>Привет.</template>
-        <template>Здрасьте</template>
+        <template>
+            <text>Привет, коль не шутишь!</text>
+        </template>
+        <template>
+            <text>Привет.</text>
+        </template>
+        <template>
+            <text>Здрасьте</text>
+        </template>
     </category>
     <category name="Приветствие_1">
         <tag>oficial</tag>
         <pattern>Добрый день</pattern>
         <pattern>Здравствуйте</pattern>
-        <template>Добрый день</template>
-        <template>Рад приветствовать!</template>
+        <template>
+            <text>Добрый день</text>
+        </template>
+        <template>
+            <text>Рад приветствовать!</text>
+        </template>
     </category>
     <category name="Anyway">
         <description>
@@ -22,8 +32,28 @@
         </description>
         <pattern></pattern>
         <tag>anyway</tag>
-        <template>Я бы не хотел сейчас об этом говорить...</template>
-        <template>Хм...</template>
-        <template>Кстати, у тебя нет знакомого бухгалтера?</template>
+        <template>
+            <text>Я бы не хотел сейчас об этом говорить...</text>
+        </template>
+        <template>
+            <text>Хм...</text>
+        </template>
+        <template>
+            <text>Кстати, у тебя нет знакомого бухгалтера?</text>
+        </template>
+    </category>
+    <category name="Ответы на как дела_0">
+        <tag>какдела</tag>
+        <pattern>Норм</pattern>
+        <pattern>Нормально</pattern>
+        <pattern>Отлично</pattern>
+        <pattern>Не плохо</pattern>
+        <pattern>Хорошо</pattern>
+        <template>
+            <text>Это хорошо. У меня тоже не плохо</text>
+        </template>
+        <template>
+            <text>Да, у меня тоже не плохо.</text>
+        </template>
     </category>
 </aiml>
