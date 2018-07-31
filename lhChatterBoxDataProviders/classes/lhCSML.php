@@ -12,6 +12,7 @@
  * @author user
  */
 require_once __DIR__ . '/../abstract/lhAbstractCSML.php';
+require_once LH_LIB_ROOT . '/lhTextConv/lhTextConv.php';
 
 class lhCSML extends lhAbstractCSML {
     
