@@ -20,7 +20,7 @@ class lhCSML extends lhAbstractCSML {
     }
     
     public function answer($user_answer, $minhitratio=0, $name=null) {
-        $name = setCurrent($name);
+        $name = $this->setCurrent($name);
         // TODO - перед поиском наиболее подходящего ответа подключить валидацию
         $answer = $this->bestAnswer($user_answer, $minhitratio);
         return $answer;
