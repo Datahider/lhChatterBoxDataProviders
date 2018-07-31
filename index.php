@@ -6,14 +6,14 @@
  * and open the template in the editor.
  */
 
-define('LH_LIB_ROOT', './');
+define('LH_LIB_ROOT', '/Users/user/MyData/phplib');
 define('LH_SESSION_DIR', '/Users/user/MyData/lhsessiondata/');
 date_default_timezone_set('UTC');
 
-require_once LH_LIB_ROOT . 'lhChatterBoxDataProviders/classes/lhSessionFile.php';
-require_once LH_LIB_ROOT . 'lhChatterBoxDataProviders/classes/lhAIML.php';
-require_once LH_LIB_ROOT . 'lhChatterBoxDataProviders/classes/lhCSML.php';
-require_once '../lhTextConv/lhTextConv/lhTextConv.php';
+require_once 'lhChatterBoxDataProviders/classes/lhSessionFile.php';
+require_once 'lhChatterBoxDataProviders/classes/lhAIML.php';
+require_once 'lhChatterBoxDataProviders/classes/lhCSML.php';
+require_once LH_LIB_ROOT . '/lhTextConv/lhTextConv.php';
 
 
 $tags = [
