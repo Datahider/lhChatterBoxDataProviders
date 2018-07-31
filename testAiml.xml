@@ -4,24 +4,16 @@
         <tag>unformal</tag>
         <pattern>Привет</pattern>
         <pattern>Здарова!</pattern>
-        <template>
-            <random>
-                <li>Привет, коль не шутишь!</li>
-                <li>Привет.</li>
-                <li>Здрасьте</li>
-            </random>
-        </template>
+        <template>Привет, коль не шутишь!</template>
+        <template>Привет.</template>
+        <template>Здрасьте</template>
     </category>
     <category name="Приветствие_1">
         <tag>oficial</tag>
         <pattern>Добрый день</pattern>
         <pattern>Здравствуйте</pattern>
-        <template>
-            <random>
-                <li>Добрый день.</li>
-                <li>Рад приветствовать!</li>
-            </random>
-        </template>
+        <template>Добрый день</template>
+        <template>Рад приветствовать!</template>
     </category>
     <category name="Anyway">
         <description>
@@ -29,13 +21,8 @@
             Фильтруется по тегу #anyway
         </description>
         <tag>anyway</tag>
-        <pattern></pattern>
-        <template>
-            <random>
-                <li>Я бы не хотел сейчас об этом говорить...</li>
-                <li>Хм...</li>
-                <li>Кстати, у тебя нет знакомого бухгалтера?</li>
-            </random>
-        </template>
+        <template>Я бы не хотел сейчас об этом говорить...</template>
+        <template>Хм...</template>
+        <template>Кстати, у тебя нет знакомого бухгалтера?</template>
     </category>
 </aiml>

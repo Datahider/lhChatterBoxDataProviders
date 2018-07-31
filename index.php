@@ -32,7 +32,7 @@ $category_tags = [
 
 $dialogs = [
     "Привет", "", "100.000000", "Привет", ["Привет, коль не шутишь!", "Привет.", "Здрасьте"],
-    "Здаров!", "#oficial", "052.631579", "Здравствуйте", ["Добрый день.", "Рад приветствовать!"],
+    "Здаров!", "#oficial", "052.631579", "Здравствуйте", ["Добрый день", "Рад приветствовать!"],
     "Любая фигня", "#anyway", "000.000000", "", ["Я бы не хотел сейчас об этом говорить...", "Хм...", "Кстати, у тебя нет знакомого бухгалтера?"]
 ];
 
@@ -112,12 +112,20 @@ for($i=0; isset($dialogs[$i]); $i += 5) {
             die();
         }
         echo '.';
-        foreach ($value[1] as $key => $arr) {
-            if ($arr != $dialogs[$i+4][$key]) {
-                echo "FAIL!!! - \$i=$i Получено: \"$arr\". Ожидалось: ".$dialogs[$i+4][$key];
+        
+        foreach ($value[1]->template as  $template) {
+            $awaiting_template = array_shift($dialogs[$i+4]);
+            if ((string)$template != $awaiting_template) {
+                echo "FAIL!!! - \$i=$i Получено: \"$template\". Ожидалось: \"$awaiting_template\"";
                 die();
             }
             echo '.';
+        }
+        if (count($dialogs[$i+4])) {
+            echo "FAIL!!! - не получены значения:";
+            print_r($dialogs[$i+4]);
+            print_r($value[1]);
+            die();
         }
         break; // тестим только первое попадание
     }

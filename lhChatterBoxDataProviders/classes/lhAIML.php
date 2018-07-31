@@ -16,6 +16,7 @@ require_once __DIR__ . '/../abstract/lhAbstractAIML.php';
 class lhAIML extends lhAbstractAIML {
     
     public function bestMatches($text, $tags=[], $minhitratio=0) {
+        $result = [];
         $metaphone = lhTextConv::metaphone($text);
         $aiml = $this->getAiml();
         $tags = $this->splitTags($tags);
