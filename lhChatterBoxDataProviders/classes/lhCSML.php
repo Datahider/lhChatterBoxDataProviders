@@ -47,6 +47,7 @@ class lhCSML extends lhAbstractCSML {
         $block = $this->block();
         $best_match_value = -1;
         $best_match_answer = null;
+        $default_answer = false;
         foreach ($block->answer as $answer) {
             foreach ($answer->pattern as $pattern) {
                 $match = lhTextConv::metaphoneSimilarity($text, $pattern);
@@ -55,11 +56,14 @@ class lhCSML extends lhAbstractCSML {
                     $best_match_answer = $answer;
                 }
             }
+            if ($answer['default']) {
+                $default_answer = $answer;
+            }
         }
         if ($best_match_value >= $minhitratio) {
             return $best_match_answer;
         } else {
-            return false;
+            return $default_answer;
         }
         
     }
