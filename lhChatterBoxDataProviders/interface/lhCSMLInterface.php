@@ -14,7 +14,7 @@
 interface lhCSMLInterface {
     
     public function start($name='start');
-    public function next($user_answer, $minhitratio=0, $name=null); // Возвращает имя следующего блока скрипта в зависимости от ответа пользователя
+    public function answer($user_answer, $minhitratio=0, $name=null); // Возвращает ответ из скрипта, который наиболее подходит под ответ пользователя
     public function block($name=null); // Возвращает блок в виде объекта xml
     
 }
