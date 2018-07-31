@@ -101,6 +101,12 @@ echo "Ok\n";
 echo 'Проверка bestMatches($text, $tags=[], $minhitratio=0)';
 for($i=0; isset($dialogs[$i]); $i += 5) {
     $result = $aiml->bestMatches($dialogs[$i], $dialogs[$i+1]);
+    if (!count($result)) {
+        echo "FAIL!!! - bestMatches(...) вернул пустой массив";
+        die();
+    }
+    echo '.';
+
     foreach ($result as $key => $value) {
         if ($key != $dialogs[$i+2]) {
             echo "FAIL!!! - \$i=$i Получено: \"$key\". Ожидалось: ".$dialogs[$i+2];

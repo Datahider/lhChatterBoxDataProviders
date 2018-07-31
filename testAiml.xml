@@ -20,6 +20,7 @@
             Категория содержащая ответы на все случаи жизни. 
             Фильтруется по тегу #anyway
         </description>
+        <pattern></pattern>
         <tag>anyway</tag>
         <template>Я бы не хотел сейчас об этом говорить...</template>
         <template>Хм...</template>
