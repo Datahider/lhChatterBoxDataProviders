@@ -109,6 +109,9 @@ class lhSessionFile extends lhAbstractSession {
     }
     
     protected function writeSessionData() {
-        file_put_contents(LH_SESSION_DIR.$this->session_id.'.data', json_encode($this->session_data));
+        $result = file_put_contents(LH_SESSION_DIR.$this->session_id.'.data', json_encode($this->session_data));
+        if ($result === false) {
+            throw new Exception("Не могу записать данные сессии в файл");
+        }
     }
 }
