@@ -3,7 +3,7 @@
     <block name="start">
         <template>Привет! Я Лостман. А тебя как зовут?</template>
         <answer>
-            <!--validator name="lhNameValidator" var="domain"></validator-->
+            <validator name="lhNameValidator" var="full"></validator>
             <next>Узнал имя</next>
             <var name="name">__validated_full__</var>
         </answer>

@@ -56,11 +56,11 @@ class lhCSML extends lhAbstractCSML {
                 $v = new $validator_class;
                 $result = $v->validate($text);
                 $vars = $v->moreInfo();
-                if ($validator['var']) {
-                    if ($validator_value) {
-                        $result = ($vars[$validator['var']] == (string)$validator);
+                if ((string)$validator['var']) {
+                    if ((string)$validator) {
+                        $result = ($vars[(string)$validator['var']] == (string)$validator);
                     } else {
-                        $result = (bool)$vars[$validator['var']];
+                        $result = (bool)$vars[(string)$validator['var']];
                     }
                 }
                 $result = $validator['not'] ? !$result : $result;

@@ -15,6 +15,8 @@ require_once 'lhChatterBoxDataProviders/classes/lhAIML.php';
 require_once 'lhChatterBoxDataProviders/classes/lhCSML.php';
 require_once LH_LIB_ROOT . '/lhTextConv/lhTextConv.php';
 require_once LH_LIB_ROOT . '/lhValidator/classes/lhEmailValidator.php';
+require_once LH_LIB_ROOT . '/lhValidator/classes/lhNameValidator.php';
+require_once LH_LIB_ROOT . '/lhRuNames/classes/lhRuNames.php';
 
 
 $tags = [
@@ -193,6 +195,15 @@ $answer = $cs->answer("boss@o3000.ru");
 $validated = json_decode($answer->validated, true);
 if ($validated['domain'] != 'o3000.ru') {
     echo "FAIL!!! - Получено \"$validated[domain]\", ожидалось \"o3000.ru\"";
+    die();
+}
+echo '.';
+
+$cs->block("start");
+$answer = $cs->answer("петя");
+$validated = json_decode($answer->validated, true);
+if ($validated['full'] != 'Петр') {
+    echo "FAIL!!! - Получено \"$validated[full]\", ожидалось \"Петр\"";
     die();
 }
 echo '.';
