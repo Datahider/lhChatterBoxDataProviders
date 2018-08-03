@@ -3,9 +3,9 @@
     <block name="start">
         <template>Привет! Я Лостман. А тебя как зовут?</template>
         <answer>
-            <validator>name</validator>
+            <!--validator name="lhNameValidator" var="domain"></validator-->
             <next>Узнал имя</next>
-            <var name="name">__validated__</var>
+            <var name="name">__validated_full__</var>
         </answer>
         <answer>
             <pattern>Не скажу</pattern>
@@ -79,6 +79,14 @@
     <block name="Не хочет называть имя повторно">
         <template>Блин, ты че, издеваешься? Давай-ка поговорим завтра. Пока! :fuck:</template>
         <var name="status">hold</var>
+    </block>
+    
+    <block name="Запрос e-mail">
+        <answer>
+            <validator name="lhEmailValidator"/>
+            <next>start</next>
+        </answer>
+        
     </block>
     
 </csml>

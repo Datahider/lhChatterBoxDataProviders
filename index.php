@@ -14,6 +14,7 @@ require_once 'lhChatterBoxDataProviders/classes/lhSessionFile.php';
 require_once 'lhChatterBoxDataProviders/classes/lhAIML.php';
 require_once 'lhChatterBoxDataProviders/classes/lhCSML.php';
 require_once LH_LIB_ROOT . '/lhTextConv/lhTextConv.php';
+require_once LH_LIB_ROOT . '/lhValidator/classes/lhEmailValidator.php';
 
 
 $tags = [
@@ -121,7 +122,7 @@ for($i=0; isset($dialogs[$i]); $i += 5) {
         
         foreach ($value[1]->template as  $template) {
             $awaiting_template = array_shift($dialogs[$i+4]);
-            if ((string)$template != $awaiting_template) {
+            if ((string)$template->text != $awaiting_template) {
                 echo "FAIL!!! - \$i=$i Получено: \"$template\". Ожидалось: \"$awaiting_template\"";
                 die();
             }
@@ -187,4 +188,12 @@ if ($answer->next != 'Даем возможность исправить имя'
 }
 echo '.';
 
+$cs->block("Запрос e-mail");
+$answer = $cs->answer("boss@o3000.ru");
+$validated = json_decode($answer->validated, true);
+if ($validated['domain'] != 'o3000.ru') {
+    echo "FAIL!!! - Получено \"$validated[domain]\", ожидалось \"o3000.ru\"";
+    die();
+}
+echo '.';
 echo "Ok\n";

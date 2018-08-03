@@ -22,8 +22,11 @@ class lhCSML extends lhAbstractCSML {
     
     public function answer($user_answer, $minhitratio=0, $name=null) {
         $name = $this->setCurrent($name);
-        // TODO - перед поиском наиболее подходящего ответа подключить валидацию
-        $answer = $this->bestAnswer($user_answer, $minhitratio);
+        // Сначала запустим все валидаторы
+        $answer = $this->runValidators($user_answer);
+        if (!$answer) {
+            $answer = $this->bestAnswer($user_answer, $minhitratio);
+        }
         return $answer;
     }
     
@@ -42,7 +45,37 @@ class lhCSML extends lhAbstractCSML {
         }
         return $this->current;
     } 
-        
+    
+    // Возвращает объект xml - блок <answer/> выбранный 
+    // по первому сработавшему валидатору
+    private function runValidators($text) {
+        $block = $this->block();
+        foreach ($block->answer as $answer) {
+            foreach ($answer->validator as $validator) {
+                $validator_class = (string)$validator['name'];
+                $v = new $validator_class;
+                $result = $v->validate($text);
+                $vars = $v->moreInfo();
+                if ($validator['var']) {
+                    if ($validator_value) {
+                        $result = ($vars[$validator['var']] == (string)$validator);
+                    } else {
+                        $result = (bool)$vars[$validator['var']];
+                    }
+                }
+                $result = $validator['not'] ? !$result : $result;
+                if ($result) {
+                    $answer->addChild('validated', json_encode($vars));
+                    return $answer;
+                }
+            }
+        }
+        return false;
+    }
+    
+    // Возвращает объект xml - блок <answer/> выбранный 
+    // по наиболее подходящему ответу или по умолчанию если попадание 
+    // в ответы меньше $minhitratio
     private function bestAnswer($text, $minhitratio=0) {
         $block = $this->block();
         $best_match_value = -1;
