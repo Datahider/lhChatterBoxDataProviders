@@ -37,6 +37,7 @@ class lhCSML extends lhAbstractCSML {
                 return $block;
             }
         }
+        throw new Exception("Не найден блок \"$name\"");
     }
     
     private function setCurrent($name) {
