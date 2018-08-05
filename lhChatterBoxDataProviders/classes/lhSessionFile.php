@@ -46,7 +46,7 @@ class lhSessionFile extends lhAbstractSession {
 
     public function log($facility, $value1, $value2=null, $value3=null, $value4=null, $value5=null) {
         if (!defined('LH_SESSION_LOG_SESSION') && ($facility == self::$facility_session)) return; // не пишем лог сессии если не установлен LH_SESSION_LOG_SESSION
-        if (!defined('LH_SESSION_LOG_SESSION') && ($facility == self::$facility_debug)) return; // не пишем лог отладки если не установлен LH_SESSION_LOG_DEBUG
+        if (!defined('LH_SESSION_LOG_DEBUG') && ($facility == self::$facility_debug)) return; // не пишем лог отладки если не установлен LH_SESSION_LOG_DEBUG
 
         if ($facility == 'test') {
             throw new Exception('$facility не может быть равно "test"');
