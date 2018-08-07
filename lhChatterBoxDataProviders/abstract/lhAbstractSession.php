@@ -25,4 +25,5 @@ abstract class lhAbstractSession implements lhSessionInterface {
     public static $facility_session = 'session';
     public static $facility_debug = 'debug';
     
+    abstract public function destroy();
 }

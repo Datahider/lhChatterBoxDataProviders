@@ -114,4 +114,10 @@ class lhSessionFile extends lhAbstractSession {
             throw new Exception("Не могу записать данные сессии в файл");
         }
     }
+    
+    public function destroy() {
+        unlink(LH_SESSION_DIR.$this->session_id.'.data');
+        $this->session_id = null;
+        $this->session_data = null;
+    }
 }

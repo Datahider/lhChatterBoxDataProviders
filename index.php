@@ -58,6 +58,13 @@ $n2 = new lhSessionFile('123');
 $status2 = $n2->get('status');
 echo $status2 == $status ? "Ok\n" : "FAIL!!! - Got: $status2\n";
 
+echo 'Проверка удаления сессии.......';
+$n2->destroy();
+
+$n3 = new lhSessionFile('123');
+$status3 = $n3->get('status');
+echo $status3 ? "FAIL!!! - Got: $status3\n" : "Ok\n";
+
 echo "\nПроверка lhAIML\n";
 echo 'Проверка splitTags($tags)';
 $aiml = new lhAIML();
