@@ -38,7 +38,7 @@ class lhSessionFile extends lhAbstractSession {
     }
     
     public function set($param, $value) {
-        $this->log(self::$facility_session, "Установка параметра сессии $this->session_id \"$param\". Старое значение: ", $this->session_data[$param]);
+        $this->log(self::$facility_session, "Установка параметра сессии $this->session_id \"$param\". Старое значение: ", isset($this->session_data[$param]) ? $this->session_data[$param] : "*** NOT SET ***");
         $this->session_data[$param] = $value;
         $this->writeSessionData();
         $this->log(self::$facility_session, "Установка параметра сессии $this->session_id \"$param\". Новое значение: ", $this->session_data[$param]);
