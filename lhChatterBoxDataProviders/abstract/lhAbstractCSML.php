@@ -43,8 +43,10 @@ abstract class lhAbstractCSML implements lhCSMLInterface {
         foreach ($this->getCsml()->block as $block) {
             $block_names[] = (string)$block['name'];
             foreach ($block->answer as $answer) {
-                if (array_search((string)$answer->next, $block_names) === false) {
-                    $not_found[] = (string)$answer->next;
+                foreach ($answer->next as $next) {
+                    if (array_search((string)$next, $block_names) === false) {
+                        $not_found[] = (string)$next;
+                    }
                 }
             }
         }
