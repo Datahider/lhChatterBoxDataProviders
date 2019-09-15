@@ -17,8 +17,19 @@ require_once __DIR__ . '/../interface/lhAimlInterface.php';
 abstract class lhAbstractAIML implements lhAimlInterface {
     private $aiml;
     
-    public function __construct() {
-        $this->aiml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><aiml/>');
+    public function __construct($aiml=null) {
+        if ($aiml === null) {
+            // Если не передано значение - инициализируем пустым
+            $this->setAiml(new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><aiml/>'));
+        } else {
+            // Если передано - сначала думаем, что это XML
+            try {
+                $this->aimlFromString($aiml);
+            } catch (Exception $exc) {
+                // Если объект из строки не создался - похоже это имя файла;
+                $this->loadAiml($aiml);
+            }
+        }
     }
     
     public function setAiml($xml_object) {

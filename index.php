@@ -105,7 +105,7 @@ foreach ($aiml->getAiml()->category as $category) {
 echo "Ok\n";
 
 echo 'Загрузка testAiml.xml...';
-$aiml->loadAiml('testAiml.xml');
+$aiml = new lhAIML('testAiml.xml');
 echo "Ok\n";
 
 echo 'Проверка bestMatches($text, $tags=[], $minhitratio=0)';
@@ -151,8 +151,7 @@ echo "Ok\n";
 echo "\nПроверка lhCSML\n";
 echo 'Проверка csmlCheck()';
 
-$cs = new lhCSML();
-$cs->loadCsml('testCsml.xml');
+$cs = new lhCSML('testCsml.xml');
 $check_result = $cs->csmlCheck();
 if (count($check_result)) {
     echo ".FAIL!!! - Не найдены блоки\n";

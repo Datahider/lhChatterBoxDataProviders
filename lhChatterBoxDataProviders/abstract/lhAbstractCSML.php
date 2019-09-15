@@ -18,8 +18,19 @@ abstract class lhAbstractCSML implements lhCSMLInterface {
     protected $current;
 
 
-    public function __construct() {
-        $this->csml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><csml/>');
+    public function __construct($csml=null) {
+        if ($csml === null) {
+            // Если не передано значение - инициализируем пустым
+            $this->setCsml(new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><aiml/>'));
+        } else {
+            // Если передано - сначала думаем, что это XML
+            try {
+                $this->csmlFromString($csml);
+            } catch (Exception $exc) {
+                // Если объект из строки не создался - похоже это имя файла;
+                $this->loadCsml($csml);
+            }
+        }
         $this->start();
     }
     
