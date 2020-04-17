@@ -23,12 +23,10 @@ abstract class lhAbstractCSML implements lhCSMLInterface {
             // Если не передано значение - инициализируем пустым
             $this->setCsml(new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><aiml/>'));
         } else {
-            // Если передано - сначала думаем, что это XML
-            try {
-                $this->csmlFromString($csml);
-            } catch (Exception $exc) {
-                // Если объект из строки не создался - похоже это имя файла;
+            if (is_readable($csml)) {
                 $this->loadCsml($csml);
+            } else {
+                $this->csmlFromString($csml);
             }
         }
         $this->start();

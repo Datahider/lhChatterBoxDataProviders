@@ -22,12 +22,10 @@ abstract class lhAbstractAIML implements lhAimlInterface {
             // Если не передано значение - инициализируем пустым
             $this->setAiml(new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><aiml/>'));
         } else {
-            // Если передано - сначала думаем, что это XML
-            try {
-                $this->aimlFromString($aiml);
-            } catch (Exception $exc) {
-                // Если объект из строки не создался - похоже это имя файла;
+            if (is_readable($aiml)) {
                 $this->loadAiml($aiml);
+            } else {
+                $this->csmlFromString($aiml);
             }
         }
     }
