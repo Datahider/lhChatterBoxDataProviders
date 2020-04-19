@@ -14,7 +14,7 @@
 
 require_once __DIR__ . '/../interface/lhAimlInterface.php';
 
-abstract class lhAbstractAIML implements lhAimlInterface {
+abstract class lhAbstractAIML extends lhSelfTestingClass implements lhAimlInterface {
     private $aiml;
     
     public function __construct($aiml=null) {

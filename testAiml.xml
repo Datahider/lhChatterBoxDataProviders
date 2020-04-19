@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <aiml>
+    <category name="Тестирование тегов">
+        <tag>тест</tag>
+        <tag>тестовый</tag>
+        <tag>тестирование</tag>
+        <pattern>Тест</pattern>
+    </category>
     <category name="Приветствие_0">
         <tag>unformal</tag>
         <pattern>Привет</pattern>
