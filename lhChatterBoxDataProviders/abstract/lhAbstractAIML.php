@@ -25,7 +25,7 @@ abstract class lhAbstractAIML extends lhSelfTestingClass implements lhAimlInterf
             if (is_readable($aiml)) {
                 $this->loadAiml($aiml);
             } else {
-                $this->csmlFromString($aiml);
+                $this->aimlFromString($aiml);
             }
         }
     }
