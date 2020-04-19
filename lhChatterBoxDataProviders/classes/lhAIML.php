@@ -14,8 +14,7 @@
 require_once __DIR__ . '/../abstract/lhAbstractAIML.php';
 
 class lhAIML extends lhAbstractAIML {
-    const DEBUG_LEVEL = 5;
-
+    const DEBUG_LEVEL = 0;
 
     public function bestMatches($text, $tags=[], $minhitratio=0) {
         $this->log(__CLASS__.'->'.__FUNCTION__);
