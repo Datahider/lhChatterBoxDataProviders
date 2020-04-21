@@ -14,25 +14,38 @@
 require_once __DIR__ . '/../abstract/lhAbstractAIML.php';
 
 class lhAIML extends lhAbstractAIML {
-    const DEBUG_LEVEL = 0;
 
     public function bestMatches($text, $tags=[], $minhitratio=0) {
         $this->log(__CLASS__.'->'.__FUNCTION__);
+        $this->log('$text='. print_r($text, true), 15);
+        $this->log('$tags='. print_r($tags, true), 15);
+        $this->log('$minhitratio='. print_r($minhitratio, true), 15);
         $result = [];
         $metaphone = lhTextConv::metaphone($text);
         $aiml = $this->getAiml();
         $tags = $this->splitTags($tags);
         foreach ($aiml->category as $category) {
             if ($this->hasTags($tags, $category)) {
-                $match = $this->categoryBestMatch($category, $metaphone, true);
-                if ($match['match_level'] >= $minhitratio) {
-                    $index = sprintf("%010.6f", $match['match_level']);
-                    $result[$index][0] = $match['best_match'];
-                    $result[$index][1] = $category;
-                    $result[$index]['best_match'] = $match['best_match'];
-                    $result[$index]['match_level'] = $match['match_level'];
-                    $result[$index]['match_type'] = $match['match_type'];
-                    $result[$index]['match'] = $match['match'];
+                $category_patterns = (array)$category->pattern;
+                $this->log('$category_patterns='. print_r($category_patterns, true), 20);
+                $match = lhTextConv::bestMatch($category_patterns, $text, $percentage);
+                $this->log('$match='. print_r($match, true), 20);
+                if ($match !== null) {
+                    if ($percentage >= $minhitratio) {
+                        $index = sprintf("%010.6f", $percentage);
+                        $result[$index][0] = $category_patterns[$match];
+                        $result[$index][1] = $category;
+                        $result[$index]['best_match'] = $category_patterns[$match];
+                        $result[$index]['match_level'] = $percentage;
+                    }
+                } else {
+                    if ($minhitratio == 0) {
+                        $index = sprintf("%010.6f", 0);
+                        $result[$index][0] = '';
+                        $result[$index][1] = $category;
+                        $result[$index]['best_match'] = '';
+                        $result[$index]['match_level'] = 0;
+                    }
                 }
             }
         }
@@ -40,83 +53,6 @@ class lhAIML extends lhAbstractAIML {
         return $result;
     }
     
-    // cacategoryBestMatch
-    // Ищет наилучший паттерн категории. 
-    // Возвращает массив [
-    //  'best_match' => строка паттерна с лучшим результатом,
-    //  'match_level' => уровень похожести в процентах,
-    // ].
-    private function categoryBestMatch($category, $text, $is_metaphone=false) {
-        $match_type = $category['match_type'] ? (string)$category['match_type'] : 'full';
-        $match = $category['match'] ? (string)$category['match'] : 'full';
-        
-        switch ($match_type) {
-            case 'full': case 'start': case 'end': case 'any':
-                break;
-            default:
-                throw new Exception("Unknown category match_type '$match_type'");
-        }
-
-        switch ($match) {
-            case 'full': case 'words': case 'chars':
-                break;
-            default:
-                throw new Exception("Unknown category match '$match'");
-        }
-        $metaphone = $is_metaphone ? $text : lhTextConv::metaphone($text);
-        $match_func = "match_". $match_type. "_". $match;
-        return $this->$match_func($category, $metaphone);
-    }
-    
-    private function match_return($best_match, $match_level, $match_type, $match) {
-        if ($match_level == -1) {
-            throw new Exception("No pattern found in category '$category[name]'");
-        }
-        return [
-            'best_match' => $best_match,
-            'match_level' => $match_level,
-            'match_type' => $match_type,
-            'match' => $match
-        ];
-    }
-
-    private function match_full_full($category, $metaphone) {
-        $this->log(__CLASS__.'->'.__FUNCTION__); $microtime = microtime(true);
-        $best_match = '';
-        $match_level = -1;
-        
-        foreach ($category->pattern as $pattern) {
-            $m_pattern = lhTextConv::metaphone($pattern);
-            $level = lhTextConv::metaphoneSimilarity($metaphone, $m_pattern);
-            if ($level > $match_level) {
-                $match_level = $level;
-                $best_match = (string)$pattern;
-            }
-        }
-        $this->log(__CLASS__.'->'.__FUNCTION__.' have taken '.  (microtime(true)-$microtime). ' seconds', 5);
-        return $this->match_return($best_match, $match_level, 'full', 'full');
-    }
-
-    private function match_start_full($category, $metaphone) {
-        $this->log(__CLASS__.'->'.__FUNCTION__); $microtime = microtime(true);
-        $best_match = '';
-        $match_level = -1;
-        
-        foreach ($category->pattern as $pattern) {
-            $m_pattern = lhTextConv::metaphone($pattern);
-            for ($i=1; $i<=strlen($metaphone); $i++) {
-                $t_pattern = substr($metaphone, 0, $i);
-                $level = lhTextConv::metaphoneSimilarity($t_pattern, $m_pattern);
-                if ($level > $match_level) {
-                    $match_level = $level;
-                    $best_match = (string)$pattern;
-                }
-            }
-        }
-        $this->log(__CLASS__.'->'.__FUNCTION__.' have taken '.  (microtime(true)-$microtime). ' seconds', 5);
-        return $this->match_return($best_match, $match_level, 'start', 'full');
-    }
-
     // splitTags($tags)
     // Служебная функция превращающая строку хештегов в массив без #
     // Если на вход передан массив - его и возвращает
@@ -251,7 +187,7 @@ END
                 ['#тест #погода', $this->getAiml()->category, false],
                 ['#тест#тестирование', $this->getAiml()->category, true]
             ],
-            'bestMatches' => [  // простое тестирование для совместимости. Более подробное дальше
+            'bestMatches' => [  // простое тестирование
                 [
                     "привет", ['fullmatch'], 50, 
                     new lhTest(function($result){
@@ -276,40 +212,7 @@ END
                         }
                     })
                 ],
-                [
-                    "Здравствуйте, дорогие товарищи!", "#startmatch", 90,
-                    new lhTest(function ($result){
-                        $found = false;
-                        foreach ($result as $key=>$value) {
-                            $found = true;
-                            if ($value[1]['name'] != "%GREETING%") {
-                                throw new Exception("Ожидалось найти категорию %GREETING%. Нашлось ". print_r($result, true));
-                            }
-                        }
-                        if (!$found) {
-                            throw new Exception("Ожидалось найти категорию %GREETING%. Нашлось ". print_r($result, true));
-                        }
-                    })
-                ],
-                [ "Хер вам, дорогие товарищи!", "#startmatch", 80, []],
-                [ "Петь, привет. У меня сломался принтер", "", 80, []],            
-                [
-                    "с добрым утром петя", "#startmatch", 80,
-                    new lhTest(function ($result){
-                        $found = false;
-                        foreach ($result as $key=>$value) {
-                            $found = true;
-                            if ($value[1]['name'] != "%GREETING%") {
-                                throw new Exception("Ожидалось найти категорию %GREETING%. Нашлось ". print_r($result, true));
-                            }
-                        }
-                        if (!$found) {
-                            throw new Exception("Ожидалось найти категорию %GREETING%. Нашлось ". print_r($result, true));
-                        }
-                    })
-                ],
             ],
-            'match_full' => '_test_skip_'  // протестировано в bestMatches 
         ];
     }
 }
