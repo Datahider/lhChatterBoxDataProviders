@@ -35,6 +35,7 @@ class lhAIML extends lhAbstractAIML {
                         $index = sprintf("%010.6f", $percentage);
                         $result[$index][0] = $category_patterns[$match];
                         $result[$index][1] = $category;
+                        $result[$index]['category'] = $category;
                         $result[$index]['best_match'] = $category_patterns[$match];
                         $result[$index]['match_level'] = $percentage;
                     }
@@ -43,6 +44,7 @@ class lhAIML extends lhAbstractAIML {
                         $index = sprintf("%010.6f", 0);
                         $result[$index][0] = '';
                         $result[$index][1] = $category;
+                        $result[$index]['category'] = $category;
                         $result[$index]['best_match'] = '';
                         $result[$index]['match_level'] = 0;
                     }
