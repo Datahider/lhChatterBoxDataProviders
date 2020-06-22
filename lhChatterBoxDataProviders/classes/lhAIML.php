@@ -25,30 +25,20 @@ class lhAIML extends lhAbstractAIML {
         $aiml = $this->getAiml();
         $tags = $this->splitTags($tags);
         foreach ($aiml->category as $category) {
-            if ($this->hasTags($tags, $category)) {
-                $category_patterns = (array)$category->pattern;
-                $this->log('$category_patterns='. print_r($category_patterns, true), 20);
-                $match = lhTextConv::bestMatch($category_patterns, $text, $percentage);
-                $this->log('$match='. print_r($match, true), 20);
-                if ($match !== null) {
-                    if ($percentage >= $minhitratio) {
-                        $index = sprintf("%010.6f", $percentage);
-                        $result[$index][0] = $category_patterns[$match];
-                        $result[$index][1] = $category;
-                        $result[$index]['category'] = $category;
-                        $result[$index]['best_match'] = $category_patterns[$match];
-                        $result[$index]['match_level'] = $percentage;
-                    }
-                } else {
-                    if ($minhitratio == 0) {
-                        $index = sprintf("%010.6f", 0);
-                        $result[$index][0] = '';
-                        $result[$index][1] = $category;
-                        $result[$index]['category'] = $category;
-                        $result[$index]['best_match'] = '';
-                        $result[$index]['match_level'] = 0;
-                    }
-                }
+            if (!$this->hasTags($tags, $category)) {
+                continue;
+            }
+            $category_patterns = $this->patternArray($category);
+            $this->log('$category_patterns='. print_r($category_patterns, true), 20);
+            $match = lhTextConv::bestMatch($category_patterns, $text, $percentage);
+            $this->log('$match='. print_r($match, true), 20);
+            if ($percentage >= $minhitratio) {
+                $index = sprintf("%010.6f", $percentage);
+                $result[$index][0] = $category_patterns[$match];
+                $result[$index][1] = $category;
+                $result[$index]['category'] = $category;
+                $result[$index]['best_match'] = $category_patterns[$match];
+                $result[$index]['match_level'] = $percentage;
             }
         }
         krsort($result);
@@ -89,6 +79,14 @@ class lhAIML extends lhAbstractAIML {
         return $has_tag;
     }
     
+    protected function patternArray($category) {
+        $result = [];
+        foreach ($category->pattern as $pattern) {
+            $result[] = (string)$pattern;
+        }
+        return $result;
+     }
+
     protected function _test_data() {
         return [
             'aimlFromString' => [[<<<END
@@ -175,6 +173,9 @@ END
             'getAiml' => [[new lhTest(lhTest::IS_A, 'SimpleXMLElement')]],
             'setAiml' => '_test_skip_', // проверено в aimlFromString
             'loadAiml' => '_test_skip_',
+            'patternArray' => [
+                [new SimpleXMLElement("<root><pattern>aaa</pattern><pattern>ccc</pattern><pattern>bbb</pattern></root>"), ['aaa', 'ccc', 'bbb']]
+            ],
             'splitTags' => [
                 ['#business #Money', [ 'business', 'Money' ]],
                 ['', []],
@@ -193,6 +194,9 @@ END
                 [
                     "привет", ['fullmatch'], 50, 
                     new lhTest(function($result){
+                        if (is_a($result, "Exception")) {
+                            throw $result;
+                        }
                         if ($result['100.000000'][0] != "Привет") {
                             throw new Exception("Ожидалось найти Привет. Нашлось ". print_r($result, true));
                         }
