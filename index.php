@@ -6,8 +6,8 @@ define('LHAIML_DEBUG_LEVEL', 0);
  * and open the template in the editor.
  */
 
-define('LH_LIB_ROOT', '/Users/user/MyData/phplib');
-define('LH_SESSION_DIR', '/Users/user/MyData/lhsessiondata/');
+define('LH_LIB_ROOT', '/Users/drweb_000/Desktop/MyData/phplib');
+define('LH_SESSION_DIR', '/Users/drweb_000/Desktop/MyData/lhsessiondata/');
 date_default_timezone_set('UTC');
 
 require_once LH_LIB_ROOT . '/lhTestingSuite/classes/lhSelfTestingClass.php';
@@ -17,6 +17,7 @@ require_once LH_LIB_ROOT . '/lhValidator/classes/lhEmailValidator.php';
 require_once LH_LIB_ROOT . '/lhValidator/classes/lhNameValidator.php';
 require_once LH_LIB_ROOT . '/lhRuNames/classes/lhRuNames.php';
 require_once 'lhChatterBoxDataProviders/classes/lhSessionFile.php';
+require_once 'lhChatterBoxDataProviders/classes/lhDBSession.php';
 require_once 'lhChatterBoxDataProviders/classes/lhAIML.php';
 require_once 'lhChatterBoxDataProviders/classes/lhCSML.php';
 
