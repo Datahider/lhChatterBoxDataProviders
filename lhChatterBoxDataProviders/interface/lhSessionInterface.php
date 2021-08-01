@@ -17,7 +17,7 @@ interface lhSessionInterface {
     public function __construct($session=null); // конструктор получающий id сессии
     public function get($param, $default=null); // Получение параметра сессии или $default если не найден
     public function set($param, $value); // Установка параметра сессии
-    public function log($facility, $value1, $value2=null, $value3=null, $value4=null, $value5=null); // Запись в лог
+    public function writeLog($facility, $value1, $value2=null, $value3=null, $value4=null, $value5=null); // Запись в лог
     public function readLog($facility='log', $last=20);
     
 }

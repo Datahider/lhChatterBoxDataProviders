@@ -44,7 +44,7 @@ class lhSessionFile extends lhAbstractSession {
         $this->log(self::$facility_session, "Установка параметра сессии $this->session_id \"$param\". Новое значение: ", $this->session_data[$param]);
     }
 
-    public function log($facility, $value1, $value2=null, $value3=null, $value4=null, $value5=null) {
+    public function writeLog($facility, $value1, $value2=null, $value3=null, $value4=null, $value5=null) {
         if (!defined('LH_SESSION_LOG_SESSION') && ($facility == self::$facility_session)) return; // не пишем лог сессии если не установлен LH_SESSION_LOG_SESSION
         if (!defined('LH_SESSION_LOG_DEBUG') && ($facility == self::$facility_debug)) return; // не пишем лог отладки если не установлен LH_SESSION_LOG_DEBUG
 

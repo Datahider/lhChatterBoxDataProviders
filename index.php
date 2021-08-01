@@ -10,6 +10,7 @@ define('LH_LIB_ROOT', '/Users/drweb_000/Desktop/MyData/phplib');
 define('LH_SESSION_DIR', '/Users/drweb_000/Desktop/MyData/lhsessiondata/');
 date_default_timezone_set('UTC');
 
+require_once __DIR__ . '/secrets.php';
 require_once LH_LIB_ROOT . '/lhTestingSuite/classes/lhSelfTestingClass.php';
 require_once LH_LIB_ROOT . '/lhTestingSuite/classes/lhTest.php';
 require_once LH_LIB_ROOT . '/lhTextConv/lhTextConv.php';
@@ -22,9 +23,30 @@ require_once 'lhChatterBoxDataProviders/classes/lhAIML.php';
 require_once 'lhChatterBoxDataProviders/classes/lhCSML.php';
 
 
+$s = new lhDBSession('123');
+$s->_test();
+
+echo "Провека чтения между сессиями";
+$s2 = new lhDBSession('123');
+$s2->dbConnect('localhost', 'test', TEST_DB_USER, TEST_DB_PASSWORD, 'test_');
+if ($s2->get('test_var', 33) != 108) {
+    throw new Exception("Ошибка чтения значения между сессиями. Ожидалось 108, получено " . $s2->get('test_var'));
+}
+echo ". ok\n";
+
+echo "Проверка удаления сессии";
+$s2->destroy();
+echo '.';
+if ($s2->get('test_var', "UNKNOWN") != 'UNKNOWN') {
+    throw new Exception('Значение тестовой переменной не удалилось');
+}
+echo '.';
+$s2->destroy();
+echo ". ok\n";
+
 $n = new lhSessionFile('123');
 
-echo "Проверка lhSessionFile\n";
+echo "\nПроверка lhSessionFile\n";
 echo 'Проверка записи и чтения внутри сессии..............';
 $random_value = rand();
 $n->set('status', $random_value);
@@ -32,7 +54,7 @@ $status = $n->get('status');
 echo $status == $random_value ? "Ok\n" : "FAIL!!!\n";
 
 echo 'Проверка записи и чтения лог-файла..................';
-$n->log(lhSessionFile::$facility_log, 'Строка лог файла');
+$n->writeLog(lhSessionFile::$facility_log, 'Строка лог файла');
 $log = $n->readLog(lhSessionFile::$facility_log, 1);
 echo preg_match("/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{4}: Строка лог файла$/u", $log[0]) ? "Ok\n" : "FAIL!!! - Got: $log[0]\n";
 

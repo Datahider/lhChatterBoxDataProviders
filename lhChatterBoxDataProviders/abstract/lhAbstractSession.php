@@ -14,7 +14,7 @@
 
 require_once __DIR__ . '/../interface/lhSessionInterface.php';
 
-abstract class lhAbstractSession implements lhSessionInterface {
+abstract class lhAbstractSession  extends lhSelfTestingClass implements lhSessionInterface {
     
     protected $session_id;
     protected $session_data;
